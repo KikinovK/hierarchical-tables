@@ -1,0 +1,7 @@
+.table__row:hover {
+  cursor: pointer;
+}
+
+.table__row:active {
+  transform: scale(1, .9);
+}
