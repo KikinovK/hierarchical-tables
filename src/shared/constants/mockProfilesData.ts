@@ -1,4 +1,4 @@
-import { mockProfile } from '../type/interface';
+import { mockProfile } from '../../type/interface';
 
 export const mockProfilesData: mockProfile[] = [
   {

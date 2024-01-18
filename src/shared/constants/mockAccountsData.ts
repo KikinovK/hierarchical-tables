@@ -1,4 +1,4 @@
-import { mockAccount } from '../type/interface';
+import { mockAccount } from '../../type/interface';
 
 export const mockAccountsData: mockAccount[] = [
   {

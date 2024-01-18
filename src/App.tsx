@@ -1,13 +1,18 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Navigate, Route, Routes } from 'react-router-dom';
+
+import Layout from './layouts/Layout';
+import AccountsPage from './pages/AccountsPage/AccountsPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import { ACCOUNTS } from './shared/router-path/routerPath';
 
 const App = () => (
-  <Container>
-    <Row>
-      <Col>
-        <h1>Tables</h1>
-      </Col>
-    </Row>
-  </Container>
+  <Routes>
+    <Route path="*" element={<NotFoundPage />} />
+    <Route path="/" element={<Layout />}>
+      <Route index element={<Navigate to={ACCOUNTS} />} />
+      <Route path={ACCOUNTS} element={<AccountsPage />} />
+    </Route>
+  </Routes>
 );
 
 export default App;
