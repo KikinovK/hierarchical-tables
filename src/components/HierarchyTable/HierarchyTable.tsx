@@ -1,16 +1,17 @@
 import { FC } from 'react';
 import { Table } from 'react-bootstrap';
 
-import { mockData } from '../../type/type';
+import { rawData } from '../../type/type';
 
 import styles from './style.module.css';
 
 interface HierarchyTableProps {
-  data: Array<mockData>;
+  data: Array<rawData>;
   handleRowClick: (id: string) => void;
+  isClickingRow?: boolean;
 }
 
-const HierarchyTable: FC<HierarchyTableProps> = ({ data, handleRowClick }) => {
+const HierarchyTable: FC<HierarchyTableProps> = ({ data, handleRowClick, isClickingRow = true }) => {
   const columns = Object.keys(data[0] || {});
 
   return (
@@ -26,7 +27,7 @@ const HierarchyTable: FC<HierarchyTableProps> = ({ data, handleRowClick }) => {
         {data.map((item, index) => (
           <tr
             key={index}
-            className={styles.table__row}
+            className={isClickingRow ? styles.table__row : ''}
             onClick={() => handleRowClick(item.id)}
           >
             {columns.map((column) => (

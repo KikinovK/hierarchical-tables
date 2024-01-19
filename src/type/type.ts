@@ -1,3 +1,5 @@
 import { mockAccount, mockCampaign, mockProfile } from './interface';
 
-export type mockData = mockAccount | mockProfile | mockCampaign;
+export type rawData = mockAccount | mockProfile | mockCampaign;
+
+export type nameTable = 'accounts' | 'profiles' | 'campaigns';

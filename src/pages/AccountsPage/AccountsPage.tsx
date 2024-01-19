@@ -1,15 +1,7 @@
-import { Col, Row } from 'react-bootstrap';
+import TemplateHierarchyPages from '../../components/TemplateHierarchyPages/TemplateHierarchyPages';
 
-import Title from '../../components/Title/Title';
-
-const AccountsPage = () => (
-  <>
-    <Row>
-      <Col>
-        <Title>Accounts</Title>
-      </Col>
-    </Row>
-  </>
-);
+const AccountsPage = () => {
+  return <TemplateHierarchyPages title="Accounts" nameTable="accounts" />;
+};
 
 export default AccountsPage;
