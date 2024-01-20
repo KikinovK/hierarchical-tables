@@ -17,7 +17,7 @@ const PaginationTables: FC<PaginationTablesProps> = ({
   const getPageItems = () => {
     const items = [];
 
-    const halfWidth = 1;
+    const halfWidth = 2;
     const width = halfWidth * 2 + 1;
     const startPage = Math.max(1, currentPage - halfWidth);
     const endPage = Math.min(totalPages, currentPage + halfWidth);
