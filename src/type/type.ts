@@ -4,6 +4,14 @@ export type rawData = mockAccount | mockProfile | mockCampaign;
 
 export type nameTable = 'accounts' | 'profiles' | 'campaigns';
 
-export type filed = keyof rawData;
+export type field = keyof rawData;
 
 export type typeSort = 'none' | 'asc' | 'desc';
+
+export type ChangeSortFunction = ({
+  fieldSort,
+  metodSort,
+}: {
+  fieldSort: field;
+  metodSort: typeSort;
+}) => void;

@@ -1,17 +1,29 @@
 import { FC } from 'react';
 import { Table } from 'react-bootstrap';
 
-import { rawData } from '../../type/type';
+import { sortDirection } from '../../shared/constants/sortDirection';
+import { ChangeSortFunction, field, rawData, typeSort } from '../../type/type';
+import ButtonSort from '../ButtonSort/ButtonSort';
 
 import styles from './style.module.css';
 
 interface HierarchyTableProps {
-  data: Array<rawData>;
+  data: rawData[];
   handleRowClick: (id: string) => void;
   isClickingRow?: boolean;
+  fieldSort?: field;
+  metodSort?: typeSort;
+  changeSort: ChangeSortFunction;
 }
 
-const HierarchyTable: FC<HierarchyTableProps> = ({ data, handleRowClick, isClickingRow = true }) => {
+const HierarchyTable: FC<HierarchyTableProps> = ({
+  data,
+  handleRowClick,
+  isClickingRow = true,
+  fieldSort,
+  metodSort,
+  changeSort,
+}) => {
   const columns = Object.keys(data[0] || {});
 
   return (
@@ -19,7 +31,20 @@ const HierarchyTable: FC<HierarchyTableProps> = ({ data, handleRowClick, isClick
       <thead>
         <tr>
           {columns.map((column) => (
-            <th key={column}>{column.toUpperCase()}</th>
+            <th key={column}>
+              <div className={styles.table__in_head}>
+                {column.toUpperCase()}
+                <ButtonSort
+                  fieldSort={fieldSort === column ? fieldSort : column}
+                  metodSort={
+                    fieldSort === column && metodSort
+                      ? metodSort
+                      : sortDirection.NONE
+                  }
+                  changeSort={changeSort}
+                />
+              </div>
+            </th>
           ))}
         </tr>
       </thead>

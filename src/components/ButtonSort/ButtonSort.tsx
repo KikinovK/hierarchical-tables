@@ -2,28 +2,22 @@ import { FC } from 'react';
 import { Button } from 'react-bootstrap';
 
 import { sortDirection } from '../../shared/constants/sortDirection';
-import { filed, typeSort } from '../../type/type';
+import { ChangeSortFunction, field, typeSort } from '../../type/type';
 
-import ArrowDownIcon from './../../assets/icon/arrow-down-up.svg';
+import ArrowDownIcon from './../../assets/icon/arrow-down.svg?react';
 import ArrowDownUpIcon from './../../assets/icon/arrow-down-up.svg?react';
 import ArrowUpIcon from './../../assets/icon/arrow-up.svg?react';
 
 import styles from './style.module.css';
 
 interface ButtonSortProps {
-  filedSort: filed;
+  fieldSort: field;
   metodSort: typeSort;
-  changeSort: ({
-    filedSort,
-    metodSort,
-  }: {
-    filedSort: filed;
-    metodSort: typeSort;
-  }) => void;
+  changeSort: ChangeSortFunction;
 }
 
 const ButtonSort: FC<ButtonSortProps> = ({
-  filedSort,
+  fieldSort,
   metodSort,
   changeSort,
 }) => {
@@ -42,7 +36,6 @@ const ButtonSort: FC<ButtonSortProps> = ({
 
   const handlerClick = () => {
     let newSort: typeSort;
-
     switch (metodSort) {
       case sortDirection.NONE:
         newSort = sortDirection.ASCENDING;
@@ -56,11 +49,17 @@ const ButtonSort: FC<ButtonSortProps> = ({
       default:
         throw new Error(`Invalid sort name: ${metodSort}`);
     }
-    changeSort({ filedSort, metodSort: newSort });
+
+    changeSort({ fieldSort, metodSort: newSort });
   };
 
   return (
-    <Button className={styles.button_sort} onClick={handlerClick}>
+    <Button
+      className={styles.button_sort}
+      onClick={handlerClick}
+      size="sm"
+      variant="light"
+    >
       {getIcon()}
     </Button>
   );
