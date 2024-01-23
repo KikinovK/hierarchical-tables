@@ -15,3 +15,11 @@ export type ChangeSortFunction = ({
   fieldSort: field;
   metodSort: typeSort;
 }) => void;
+
+export type ChangeFilterFunction = ({
+  fieldFilter,
+  queryFilter,
+}: {
+  fieldFilter: field;
+  queryFilter: string;
+}) => void;

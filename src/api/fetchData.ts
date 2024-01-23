@@ -6,16 +6,16 @@ import { paramApi } from '../shared/constants/paramApi';
 import { sortDirection } from '../shared/constants/sortDirection';
 import { nameTable, rawData } from '../type/type';
 
-type params = Record<string, string>;
+export type params = Record<string, string>;
 
 const getTable = (name: nameTable): rawData[] => {
   switch (name) {
     case 'accounts':
-      return mockAccountsData;
+      return [ ...mockAccountsData ];
     case 'profiles':
-      return mockProfilesData;
+      return [ ...mockProfilesData ];
     case 'campaigns':
-      return mockCampaignsData;
+      return [ ...mockCampaignsData ];
     default:
       throw new Error(`Invalid table name: ${name}`);
   }
@@ -28,8 +28,9 @@ export const fetchData = (
   const {
     [paramApi.PAGE]: pageParam,
     [paramApi.PAGE_SIZE]: pageSizeParam,
-    [paramApi.FILTER]: field,
+    [paramApi.SORT]: fieldSort,
     [paramApi.ORDER]: order,
+    [paramApi.FILTER]: filter,
   } = searchParams;
 
   const currentPage = Number(pageParam) || constDefault.CURRENT_PAGE;
@@ -43,10 +44,15 @@ export const fetchData = (
     }
   }
 
-  if (field && order) {
+  if (filter) {
+    const [fieldFilter, query] = filter.split(":");
+    data = data.filter((item) => item[fieldFilter]?.toString().includes(query))
+  }
+
+  if (fieldSort && order) {
     data = data.sort((a, b) => {
-      const aValue = a[field];
-      const bValue = b[field];
+      const aValue = a[fieldSort];
+      const bValue = b[fieldSort];
 
       if (!aValue || !bValue || typeof aValue !== typeof bValue) {
         return 0;
@@ -65,5 +71,6 @@ export const fetchData = (
     (currentPage - 1) * pageSize,
     (currentPage - 1) * pageSize + pageSize
   );
+  
   return { newData, totalPages, newCurrentPage: currentPage };
 };

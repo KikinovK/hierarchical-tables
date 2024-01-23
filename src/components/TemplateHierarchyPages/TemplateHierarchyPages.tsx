@@ -2,12 +2,13 @@ import { FC, ReactNode, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { fetchData } from '../../api/fetchData';
+import { fetchData, params } from '../../api/fetchData';
 import { constDefault } from '../../shared/constants/default';
 import { hierarchyData } from '../../shared/constants/hierarchyData';
 import { paramApi } from '../../shared/constants/paramApi';
 import { sortDirection } from '../../shared/constants/sortDirection';
 import {
+  ChangeFilterFunction,
   ChangeSortFunction,
   nameTable,
   rawData,
@@ -26,12 +27,13 @@ const TemplateHierarchyPages: FC<TemplateHierarchyPagesProps> = ({
   title,
   nameTable,
 }) => {
-  console.log('Table');
   const [data, setData] = useState<rawData[]>([]);
   const [currentPage, setCurrentPage] = useState(constDefault.CURRENT_PAGE);
   const [totalPages, setTotalPages] = useState(constDefault.TOTAL_PAGES);
   const [fieldSort, setfieldSort] = useState('');
   const [metodSort, setMetodSort] = useState<typeSort>(sortDirection.NONE);
+  const [fieldFilter, setFieldFilter] = useState('');
+  const [queryFilter, setQueryFilter] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -52,17 +54,37 @@ const TemplateHierarchyPages: FC<TemplateHierarchyPagesProps> = ({
   const onChangeSort: ChangeSortFunction = ({ fieldSort, metodSort }) => {
     if (metodSort === sortDirection.NONE) {
       setfieldSort(fieldSort.toString());
-      searchParams.delete(paramApi.FILTER);
+      searchParams.delete(paramApi.SORT);
 
       setMetodSort(metodSort);
       searchParams.delete(paramApi.ORDER);
     } else {
       setfieldSort(fieldSort.toString());
-      searchParams.set(paramApi.FILTER, fieldSort.toString());
+      searchParams.set(paramApi.SORT, fieldSort.toString());
 
       setMetodSort(metodSort);
       searchParams.set(paramApi.ORDER, metodSort.toString());
     }
+
+    setSearchParams(searchParams);
+  };
+
+  const onChangeFilter: ChangeFilterFunction = ({
+    fieldFilter,
+    queryFilter,
+  }) => {
+    if (!queryFilter) {
+      setFieldFilter('');
+      setQueryFilter('');
+
+      searchParams.delete(paramApi.FILTER);
+    } else {
+      setFieldFilter(fieldFilter.toString());
+      setQueryFilter(queryFilter);
+
+      searchParams.set(paramApi.FILTER, encodeURI(`${fieldFilter}:${queryFilter}`));
+    }
+
     setSearchParams(searchParams);
   };
 
@@ -73,12 +95,25 @@ const TemplateHierarchyPages: FC<TemplateHierarchyPagesProps> = ({
       searchParams.set(paramApi.PAGE, constDefault.CURRENT_PAGE.toString());
     setSearchParams(searchParams);
 
-    const searchParamsArray = Array.from(searchParams.entries()).reduce(
-      (acc, [key, value]) => Object.assign(acc, { [key]: value }),
+    const searchParamsArray: params = Array.from(searchParams.entries()).reduce(
+      (acc, [key, value]) => Object.assign(acc, { [key]: decodeURIComponent(value) }),
       {}
     );
 
-    console.log('searchParamsArray', searchParamsArray);
+    const {
+      [paramApi.SORT]: fieldSort,
+      [paramApi.ORDER]: order,
+      [paramApi.FILTER]: filter,
+    } = searchParamsArray;
+
+    setfieldSort(fieldSort);
+    setMetodSort(order as typeSort);
+
+    if (filter) {
+      const [fieldFilter, query] = filter.split(":");
+      setFieldFilter(fieldFilter);
+      setQueryFilter(query);
+    }
 
     const { newData, totalPages, newCurrentPage } = fetchData(
       searchParamsArray,
@@ -106,6 +141,9 @@ const TemplateHierarchyPages: FC<TemplateHierarchyPagesProps> = ({
             fieldSort={fieldSort}
             metodSort={metodSort}
             changeSort={onChangeSort}
+            fieldFilter={fieldFilter}
+            queryFilter={queryFilter}
+            changeFilter={onChangeFilter}
           />
         </Col>
       </Row>

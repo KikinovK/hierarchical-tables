@@ -2,8 +2,15 @@ import { FC } from 'react';
 import { Table } from 'react-bootstrap';
 
 import { sortDirection } from '../../shared/constants/sortDirection';
-import { ChangeSortFunction, field, rawData, typeSort } from '../../type/type';
+import {
+  ChangeFilterFunction,
+  ChangeSortFunction,
+  field,
+  rawData,
+  typeSort,
+} from '../../type/type';
 import ButtonSort from '../ButtonSort/ButtonSort';
+import Filter from '../Filter/Filter';
 
 import styles from './style.module.css';
 
@@ -14,6 +21,9 @@ interface HierarchyTableProps {
   fieldSort?: field;
   metodSort?: typeSort;
   changeSort: ChangeSortFunction;
+  fieldFilter: field;
+  queryFilter: string;
+  changeFilter: ChangeFilterFunction;
 }
 
 const HierarchyTable: FC<HierarchyTableProps> = ({
@@ -23,6 +33,9 @@ const HierarchyTable: FC<HierarchyTableProps> = ({
   fieldSort,
   metodSort,
   changeSort,
+  fieldFilter,
+  queryFilter,
+  changeFilter,
 }) => {
   const columns = Object.keys(data[0] || {});
 
@@ -43,6 +56,7 @@ const HierarchyTable: FC<HierarchyTableProps> = ({
                   }
                   changeSort={changeSort}
                 />
+                <Filter queryFilter={fieldFilter === column ? queryFilter : ''} fieldFilter={column} changeFilter={changeFilter} />
               </div>
             </th>
           ))}
