@@ -56,7 +56,11 @@ const HierarchyTable: FC<HierarchyTableProps> = ({
                   }
                   changeSort={changeSort}
                 />
-                <Filter queryFilter={fieldFilter === column ? queryFilter : ''} fieldFilter={column} changeFilter={changeFilter} />
+                <Filter
+                  queryFilter={fieldFilter === column ? queryFilter : ''}
+                  fieldFilter={column}
+                  changeFilter={changeFilter}
+                />
               </div>
             </th>
           ))}

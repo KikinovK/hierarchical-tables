@@ -12,7 +12,11 @@ interface FilterProps {
   queryFilter: string;
 }
 
-const Filter: FC<FilterProps> = ({ changeFilter, fieldFilter, queryFilter }) => {
+const Filter: FC<FilterProps> = ({
+  changeFilter,
+  fieldFilter,
+  queryFilter,
+}) => {
   const [show, setShow] = useState(false);
   const [inputValue, setInputValue] = useState(queryFilter || '');
 
@@ -30,7 +34,7 @@ const Filter: FC<FilterProps> = ({ changeFilter, fieldFilter, queryFilter }) => 
       changeFilter({
         fieldFilter,
         queryFilter: inputValue,
-      })
+      });
     }
   };
 
@@ -40,14 +44,16 @@ const Filter: FC<FilterProps> = ({ changeFilter, fieldFilter, queryFilter }) => 
     changeFilter({
       fieldFilter,
       queryFilter: '',
-    })
-
-  }
+    });
+  };
 
   return (
     <>
       <ButtonFilter onClickFilter={handlerClickFilter} />
-      <div className={`${styles.filter__overlay} ${show ? 'd-block' : 'd-none'}`} onClick={() => setShow(false)} ></div>
+      <div
+        className={`${styles.filter__overlay} ${show ? 'd-block' : 'd-none'}`}
+        onClick={() => setShow(false)}
+      ></div>
       <Toast
         className={styles.filter__toast}
         onClose={() => setShow(false)}
@@ -61,10 +67,15 @@ const Filter: FC<FilterProps> = ({ changeFilter, fieldFilter, queryFilter }) => 
             type="text"
             size="sm"
             value={inputValue}
-            onChange={handleInputChange} />
+            onChange={handleInputChange}
+          />
           <ButtonToolbar className="mt-2 gap-2">
-            <Button  onClick={handleSubmit} variant="primary" size="sm">Search</Button>
-            <Button onClick={handleReset} variant="secondary" size="sm">Reset</Button>
+            <Button onClick={handleSubmit} variant="primary" size="sm">
+              Search
+            </Button>
+            <Button onClick={handleReset} variant="secondary" size="sm">
+              Reset
+            </Button>
           </ButtonToolbar>
         </Toast.Body>
       </Toast>

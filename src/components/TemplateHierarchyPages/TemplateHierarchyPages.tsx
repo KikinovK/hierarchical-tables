@@ -82,7 +82,10 @@ const TemplateHierarchyPages: FC<TemplateHierarchyPagesProps> = ({
       setFieldFilter(fieldFilter.toString());
       setQueryFilter(queryFilter);
 
-      searchParams.set(paramApi.FILTER, encodeURI(`${fieldFilter}:${queryFilter}`));
+      searchParams.set(
+        paramApi.FILTER,
+        encodeURI(`${fieldFilter}:${queryFilter}`)
+      );
     }
 
     setSearchParams(searchParams);
@@ -96,7 +99,8 @@ const TemplateHierarchyPages: FC<TemplateHierarchyPagesProps> = ({
     setSearchParams(searchParams);
 
     const searchParamsArray: params = Array.from(searchParams.entries()).reduce(
-      (acc, [key, value]) => Object.assign(acc, { [key]: decodeURIComponent(value) }),
+      (acc, [key, value]) =>
+        Object.assign(acc, { [key]: decodeURIComponent(value) }),
       {}
     );
 
@@ -110,7 +114,7 @@ const TemplateHierarchyPages: FC<TemplateHierarchyPagesProps> = ({
     setMetodSort(order as typeSort);
 
     if (filter) {
-      const [fieldFilter, query] = filter.split(":");
+      const [fieldFilter, query] = filter.split(':');
       setFieldFilter(fieldFilter);
       setQueryFilter(query);
     }
@@ -123,6 +127,7 @@ const TemplateHierarchyPages: FC<TemplateHierarchyPagesProps> = ({
     setData(newData);
     setCurrentPage(newCurrentPage);
     setTotalPages(totalPages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, nameTable]);
 
   return (
