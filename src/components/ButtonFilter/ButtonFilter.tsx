@@ -16,7 +16,7 @@ const ButtonFilter: FC<ButtonFilterProps> = ({ onClickFilter }) => (
     size="sm"
     variant="light"
   >
-    <SerchIcon />
+    <SerchIcon width="20px" />
   </Button>
 );
 
